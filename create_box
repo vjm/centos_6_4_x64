@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+#export PACKER_LOG=1
+export PACKER_CACHE_DIR=$HOME/.packer_cache # https://github.com/mitchellh/packer/blob/master/packer.go#L98
+rm builds/virtualbox/centos_6_4_x64.box || true
+packer build -only=virtualbox centos_6_4_x64.json
+vagrant box remove centos_6_4_x64 || true
+vagrant box add centos_6_4_x64 builds/virtualbox/centos_6_4_x64.box
